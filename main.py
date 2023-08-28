@@ -82,8 +82,7 @@ def get_unread_messages():
 
         if messages:  # if some messages were found
             for i, message in enumerate(messages):  # go over all unread messages
-
-                if i == 1: break
+                if i == 3: break
 
                 msg = service.users().messages().get(userId='me',
                                                             id=message['id'],

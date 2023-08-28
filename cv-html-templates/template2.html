@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>John Doe - Resume</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .header {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+    }
+    .section {
+      margin: 20px;
+    }
+    .section h2 {
+      margin-bottom: 10px;
+    }
+    .subsection {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>%(name)s</h1>
+    <p>+420 777 539 989</p>
+  </div>
+
+  <div class="section">
+    <h2>Předchozí zkušenosti</h2>
+    <div class="subsection">
+      %(job_exps)s
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Dosažené vzdělání</h2>
+    <div class="subsection">
+      %(education)s
+    </div>
+  </div>
+</body>
+</html>
