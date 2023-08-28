@@ -105,6 +105,7 @@ def get_unread_messages():
 
                 for url in job_urls:
                     respond(url, category)
+                    print("DONE")
 
                 time.sleep(1)
         else:

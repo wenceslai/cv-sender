@@ -24,8 +24,6 @@ def classify_blue_white_collar(job_desc):
         temperature=0.5
     ).choices[0].text.strip().lower()
 
-    print(response)
-
     if "bl" in response: return "blue"
     elif "wh" in response: return "white"
 
@@ -45,8 +43,6 @@ def classify_is_client_facing(job_desc):
         max_tokens=1024,
         temperature=0.5
     ).choices[0].text.strip().lower()
-
-    print(response)
 
     if "cust" in response:
         return "customer-facing"
@@ -86,8 +82,8 @@ def generate_education(job_description, education_type):
 
     Formát jedné prcovní zkušenosti:
     <h3><název školy></h3>
-    <h4><obor školy></h4>
     <b><datum začátku a datum konce></b>
+    <p><obor školy></p>
     """
 
     response = openai.Completion.create(

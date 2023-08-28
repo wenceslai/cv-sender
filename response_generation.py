@@ -10,6 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 import pdfkit
 
+
 def respond(url, category):
     response = requests.get(url)
 
@@ -39,15 +40,15 @@ def respond(url, category):
             customer_or_internal_facing = classify_is_client_facing(job_desc)
             category += "_" + customer_or_internal_facing
 
-    generate_category_pdfs(category, job_desc)
+    generate_category_pdfs(category, job_desc, url)
 
     # mine the website
 
 
-def generate_category_pdfs(category, job_desc):
+def generate_category_pdfs(category, job_desc, url):
     sex = random.choice(["male", "female"])
-    hq_exps = random.randint(HIGH_QUALIF_EXPS_RANGE)
-    lq_exps = random.randint(LOW_QUALIF_EXPS_RANGE)
+    hq_exps = random.randint(*HIGH_QUALIF_EXPS_RANGE)
+    lq_exps = random.randint(*LOW_QUALIF_EXPS_RANGE)
 
     first_name_i = generate_unique_index((0, len(ROMA_FIRST_NAMES[sex]) - 1), [])
     last_name_i = generate_unique_index((0, len(ROMA_LAST_NAMES[sex]) - 1), [])
@@ -74,13 +75,16 @@ def generate_category_pdfs(category, job_desc):
     template_nums = [1, 2, 3, 4]
     random.shuffle(template_nums)
 
-    generate_pdf(category, roma_hq_name, hq_exps, education_type, job_desc, template_nums[0])
-    generate_pdf(category, roma_lq_name, lq_exps, education_type, job_desc, template_nums[1])
-    generate_pdf(category, white_hq_name, hq_exps, education_type, job_desc, template_nums[2])
-    generate_pdf(category, white_lq_name, lq_exps, education_type, job_desc, template_nums[3])
+    dir_path = f"generated-cvs/{int(time.time())}"
+    os.mkdir(dir_path)
+
+    generate_pdf(category + "_roma_high_qualif", roma_hq_name, hq_exps, education_type, job_desc, template_nums[0], url, dir_path)
+    generate_pdf(category + "_roma_low_qualif", roma_lq_name, lq_exps, education_type, job_desc, template_nums[1], url, dir_path)
+    generate_pdf(category + "_white_high_qualif", white_hq_name, hq_exps, education_type, job_desc, template_nums[2], url, dir_path)
+    generate_pdf(category + "_white_low_qualif", white_lq_name, lq_exps, education_type, job_desc, template_nums[3], url, dir_path)
 
 
-def generate_pdf(category, name, exps_num, education_type, job_desc, template_number):
+def generate_pdf(tag, name, exps_num, education_type, job_desc, template_number, url, dir_path):
     with open(f'cv-html-templates/template{template_number}.html', 'r') as file:
         html_content = file.read()
 
@@ -89,4 +93,9 @@ def generate_pdf(category, name, exps_num, education_type, job_desc, template_nu
 
         filled_html = html_content % {"name": name, "education": education, "job_exps": job_exps}
 
-        pdfkit.from_string(filled_html, f"generated-cvs/{category}_{int(time.time())}.pdf")
+        # saving file with metadata
+        with open(os.path.join(dir_path, "details.txt"), "w") as file:
+            file.write(job_desc + "\n" + url)
+
+        # generating the pdf
+        pdfkit.from_string(filled_html, f"{dir_path}/{tag}.pdf")
