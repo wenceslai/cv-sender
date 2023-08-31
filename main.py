@@ -17,9 +17,8 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+SCOPES = ['https://www.googleapis.com/auth/gmail.modify']  # .readonly would forbid editing
 
-# email: offerslowincome@gmail.com
 
 def authenticate():
     """Shows basic usage of the Gmail API.
@@ -69,40 +68,48 @@ def get_job_category(html):
     else:
         return "not_offer_email"
 
+
 def get_unread_messages():
     try:
         # Call the Gmail API
         creds = authenticate()
         service = build('gmail', 'v1', credentials=creds)
 
+        # Reads
         results = service.users().messages().list(userId='me',
                                                   labelIds=['INBOX'],
                                                   q="is:unread").execute()
         messages = results.get("messages", [])
 
         if messages:  # if some messages were found
-            for i, message in enumerate(messages):  # go over all unread messages
-                if i == 3: break
+            for i, message in enumerate(messages):  # Goes over all unread messages
 
+                # Read the message body
                 msg = service.users().messages().get(userId='me',
                                                             id=message['id'],
                                                             format="raw").execute()
+                # Mark the email as read to not go over it twice
+                service.user().messages().modify(userId='me',
+                                                 id=message['id'],
+                                                 body={'removeLabelIds': ['UNREAD']}).execute()
 
+                # Decode the message
                 mime_msg = email.message_from_bytes(base64.urlsafe_b64decode(msg['raw']))
                 html = extract_html_payload(mime_msg)
 
-                # extract relevant urls with job offerings
+                # Extract relevant urls with job offers
                 pattern = r'"(http://tracking\.jobs\.cz[^"]*)"'
                 job_urls = re.findall(pattern, html)
                 job_urls = [url.strip().replace(" ", "")
                             .replace("=", "")
                             .replace("\r\n", "") for url in job_urls]
 
-                category = get_job_category(html)
+                category = get_job_category(html)  # Classify the offer into 1 of 5 types
 
-                if category == "not_offer_email":  # not an email from jobs cz
+                if category == "not_offer_email":  # Continue if it's not
                     continue
 
+                # Respond to each job offering
                 for url in job_urls:
                     respond(url, category)
                     print("DONE")

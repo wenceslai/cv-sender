@@ -22,3 +22,11 @@ WHITE_LAST_NAMES = {
 HIGH_QUALIF_EXPS_RANGE = (3, 4)
 LOW_QUALIF_EXPS_RANGE = (1, 2)
 
+# emails for receiving responses from companies
+ROMA_HIGH_QUALIF_EMAIL = "prihlaskypracovni+1@gmail.com"
+ROMA_LOW_QUALIF_EMAIL = "prihlaskypracovni+2@gmail.com"
+WHITE_HIGH_QUALIF_EMAIL = "prihlaskypracovni+3@gmail.com"
+WHITE_LOW_QUALIF_EMAIL = "prihlaskypracovni+4@gmail.com"
+
+OFFERS_EMAIL = "offerslowincome@gmail.com"
+GCLOUD_EMAIL = "offersbrigady@gmail.com"

@@ -46,6 +46,10 @@
         .section li {
             margin-bottom: 10px;
         }
+        .subsection {
+            margin-left: 30px
+        }
+        
     </style>
 </head>
 <body>
@@ -57,12 +61,18 @@
         
         <div class="section">
             <h2>Zkušenosti</h2>
-            %(job_exps)s
+
+            <div class="subsection">
+                %(job_exps)s
+            </div>
         </div>
         
         <div class="section">
             <h2>Vzdělání</h2>
-            %(education)s
+            
+            <div class="subsection">
+                %(education)s
+            </div>
         </div>
     </div>
 </body>
