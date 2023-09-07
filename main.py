@@ -9,7 +9,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 def initialization():
-    schedule.every().day.at("00:00").do(parse_unread_emails())
+    schedule.every().day.at("00:00").do(parse_unread_emails)
 
     # Run the scheduler continuously.
     while True:
