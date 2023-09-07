@@ -92,7 +92,7 @@ def generate_education(job_description, education_type):
         engine="text-davinci-003",
         prompt=experience_prompt.format(job_description, education_type),
         max_tokens=1024,
-        temperature=0.9
+        temperature=0.7
     ).choices[0].text
 
     return response

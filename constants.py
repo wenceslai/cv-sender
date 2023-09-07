@@ -1,3 +1,5 @@
+import os
+
 ROMA_FIRST_NAMES = {
     "male": ["Laco", "Rudo", "Fero", "Maroš", "Martin", "Tomáš", "Ernesto", "Ernik", "Onur", "Patrik", "Mario"],
     "female": ["Esmeralda", "Jenifer", "Dominika", "Karol", "Šarlota", "Eržika", "Denisa", "Šerezáda"]
@@ -30,3 +32,9 @@ WHITE_LOW_QUALIF_EMAIL = "prihlaskypracovni+4@gmail.com"
 
 OFFERS_EMAIL = "offerslowincome@gmail.com"
 GCLOUD_EMAIL = "offersbrigady@gmail.com"
+
+# Determining where should logs be saved
+if os.getenv("RUN_LOCATION") == "LOCAL":
+    CV_LOG_DIR = "generated-cvs"
+elif os.getenv("RUN_LOCATION") == "DEPLOYED":
+    CV_LOG_DIR = "/data/generated-cvs"

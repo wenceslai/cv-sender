@@ -30,11 +30,11 @@ def respond(url, category):
     start_search_i = web_text.find("Pracovní nabídka")
 
     if start_search_i == -1:
-        print("error, the description of the job is not there")
+        print("error, the description of a job is not on the website")
         return
 
     job_desc = re.sub(r'\s{2,}', ' ', web_text[start_search_i + 16: start_search_i + 1000])
-    print(job_desc)
+
     if category == "low_income":
         # If it's a white or blue collar position
         blue_or_white_collar = classify_blue_white_collar(job_desc)
@@ -45,7 +45,9 @@ def respond(url, category):
             customer_or_internal_facing = classify_is_client_facing(job_desc)
             category += "_" + customer_or_internal_facing
 
-    dir_path = f"generated-cvs/{int(time.time())}"
+    print(category, job_desc)
+
+    dir_path = os.path.join(CV_LOG_DIR, str(int(time.time())))
     os.mkdir(dir_path)
 
     details = generate_application_details_and_pdfs(category, job_desc, url, dir_path)
@@ -90,7 +92,7 @@ def submit_pdf(url, name, surname, email, cv_path):
         cv_file.send_keys(os.path.abspath(cv_path))
 
         submit_button = driver.find_element(By.XPATH,
-                                     "//a[@class='Button Button--primary Button--large']")
+                                     "//button[@class='Button Button--primary Button--large']")
         #submit_button.click()
 
         driver.quit()
