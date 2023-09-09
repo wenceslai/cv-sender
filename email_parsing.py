@@ -8,6 +8,7 @@ import os.path
 import base64
 import time
 import email
+import random
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -111,6 +112,11 @@ def parse_unread_emails():
                 # Respond to each job offering
                 for url in job_urls:
                     respond(url, category)
+
+                    delay = random.randint(2, 10)
+                    print("Sleep " + str(delay) + "s")
+                    time.sleep(delay)
+
                     print("url solved")
 
                 time.sleep(1)

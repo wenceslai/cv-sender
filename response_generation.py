@@ -69,6 +69,10 @@ def submit_pdfs(url, dir_path, details):
 
 
 def submit_pdf(url, name, surname, email, cv_path):
+    delay = random.randint(1, 4)
+    print("Sleep " + str(delay) + "s")
+    time.sleep(delay)
+
     driver = webdriver.Chrome()
     try:
         driver.get(url)
@@ -87,9 +91,13 @@ def submit_pdf(url, name, surname, email, cv_path):
         email_field.clear()
 
         name_field.send_keys(name)
+        time.sleep(1.0)
         surname_field.send_keys(surname)
+        time.sleep(0.8)
         email_field.send_keys(email)
+        time.sleep(1.2)
         cv_file.send_keys(os.path.abspath(cv_path))
+        time.sleep(0.3)
 
         submit_button = driver.find_element(By.XPATH,
                                      "//button[@class='Button Button--primary Button--large']")

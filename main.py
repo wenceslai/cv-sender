@@ -12,15 +12,8 @@ app = FastAPI()
 @repeat_every(seconds=60 * 60 * 24)  # repeat every 24h
 def initialization():
     print("executing periodic reading of emails")
-    """
-    schedule.every().day.at("00:00").do(parse_unread_emails)
+    parse_unread_emails()
 
-    # Run the scheduler continuously.
-    while True:
-        schedule.run_pending()
-        time.sleep(1)  # Sleep for 10 second to avoid high CPU usage
-
-    """
 
 @app.get("/")
 async def root():
