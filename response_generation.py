@@ -29,6 +29,8 @@ def respond(url, category):
 
     start_search_i = web_text.find("Pracovní nabídka")
 
+    print(web_text)
+
     if start_search_i == -1:
         print("error, the description of a job is not on the website")
         return
@@ -101,7 +103,8 @@ def submit_pdf(url, name, surname, email, cv_path):
 
         submit_button = driver.find_element(By.XPATH,
                                      "//button[@class='Button Button--primary Button--large']")
-        #submit_button.click()
+
+        #submit_button.click() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UNCOMMENT TO ACTUALLY SUBMIT THE CVs
 
         driver.quit()
 

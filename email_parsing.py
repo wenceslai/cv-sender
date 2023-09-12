@@ -69,7 +69,7 @@ def get_job_category(html):
         return "not_offer_email"
 
 
-def parse_unread_emails():
+def respond_unread_emails():
     try:
         # Call the Gmail API
         creds = authenticate()
@@ -117,8 +117,9 @@ def parse_unread_emails():
                     print("Sleep " + str(delay) + "s")
                     time.sleep(delay)
 
-                    print("url solved")
+                    print("url resolved")
 
+                print("ALL EMAILS RESOLVED, NO MORE PENDING OFFERS AT THIS MOMENT")
                 time.sleep(1)
         else:
             print("no new messages")
@@ -129,6 +130,5 @@ def parse_unread_emails():
         print(f'An error occurred: {error}')
 
 
-
 if __name__ == '__main__':
-    parse_unread_emails()
+    respond_unread_emails()
