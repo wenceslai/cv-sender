@@ -107,13 +107,14 @@ def respond_unread_emails():
                 category = get_job_category(html)  # Classify the offer into 1 of 5 types
 
                 if category == "not_offer_email":  # Continue if it's not
+                    print("not an email with offer")
                     continue
 
                 # Respond to each job offering
                 for url in job_urls:
                     respond(url, category)
 
-                    delay = random.randint(2, 10)
+                    delay = random.uniform(2.0, 10.0)
                     print("Sleep " + str(delay) + "s")
                     time.sleep(delay)
 
