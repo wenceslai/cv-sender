@@ -13,6 +13,7 @@ import json
 import pdfkit
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ChromeOptions
 from datetime import datetime
 
 
@@ -37,6 +38,10 @@ def respond(url, category):
 
     job_desc = re.sub(r'\s{2,}', ' ', web_text[start_search_i + 16: start_search_i + 1000])
 
+    categorize_offer(url, category, job_desc)
+
+
+def categorize_offer(url, category, job_desc):
     if category == "low_income":
         # If it's a white or blue collar position
         blue_or_white_collar = classify_blue_white_collar(job_desc)
@@ -46,8 +51,6 @@ def respond(url, category):
         if blue_or_white_collar == "white":
             customer_or_internal_facing = classify_is_client_facing(job_desc)
             category += "_" + customer_or_internal_facing
-
-    print(category, job_desc)
 
     dir_path = os.path.join(CV_LOG_DIR, str(int(time.time())))
     os.mkdir(dir_path)
@@ -75,7 +78,11 @@ def submit_pdf(url, name, surname, email, cv_path):
     print("Sleep " + str(delay) + "s")
     time.sleep(delay)
 
-    driver = webdriver.Chrome()
+    options = ChromeOptions()
+    options.add_argument("--headless=new")
+
+    driver = webdriver.Chrome(options=options)
+
     try:
         driver.get(url)
 
@@ -104,8 +111,9 @@ def submit_pdf(url, name, surname, email, cv_path):
         submit_button = driver.find_element(By.XPATH,
                                      "//button[@class='Button Button--primary Button--large']")
 
-        #submit_button.click() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UNCOMMENT TO ACTUALLY SUBMIT THE CVs
+        submit_button.click() # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! UNCOMMENT TO ACTUALLY SUBMIT THE CVs
 
+        print("Form successfully submitted")
         driver.quit()
 
     except Exception as e:
