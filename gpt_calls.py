@@ -51,13 +51,15 @@ def classify_is_client_facing(job_desc):
         return "internal-facing"
 
 
-def generate_job_experiences(job_description, number_of_experiences):
+def generate_job_experiences(job_description, number_of_experiences, sex):
+    czech_sex = "žena" if sex == "female" else "male"
+
     experience_prompt = """
     Přečti následující úryvek z pracovní nabídky:
     {}
 
 
-    Vygeneruj {} pracovní zkušenosti ze stejného odvětní jako je výše uvedená praocovní nabídka. Použij reálné názvy firem. Text bude následně použit v životopisu. Nečísluj vygenerované pracovní zkušenosti.
+    Vygeneruj {} pracovní zkušenosti ze stejného odvětní jako je výše uvedená praocovní nabídka. Použij reálné názvy firem. Vynechej s.r.o. Názvy firem musí být různorodé. Text bude následně použit v životopisu. Pohlaví vlastníka životopisu je {}. Nečísluj vygenerované pracovní zkušenosti.
 
     Formát jedné prcovní zkušenosti:
     <h3><název firmy></h3>
@@ -67,7 +69,7 @@ def generate_job_experiences(job_description, number_of_experiences):
 
     response = openai.Completion.create(
         engine="text-davinci-003",
-        prompt=experience_prompt.format(job_description, str(number_of_experiences)),
+        prompt=experience_prompt.format(job_description, str(number_of_experiences), czech_sex),
         max_tokens=1024,
         temperature=0.9
     ).choices[0].text
@@ -75,12 +77,14 @@ def generate_job_experiences(job_description, number_of_experiences):
     return response
 
 
-def generate_education(job_description, education_type):
+def generate_education(job_description, education_type, sex):
+    czech_sex = "žena" if sex == "female" else "male"
+
     experience_prompt = """
     Přečti následující úryvek z pracovní nabídky:
     {}
     
-    Vygeneruj záznam o vzdělání dosaženém na {} z podobného oboru jako je výše uvedená pracovní nabídka. Použij reálné názvy škol. Text bude následně použit v životopisu.
+    Vygeneruj záznam o vzdělání dosaženém na {} z podobného oboru jako je výše uvedená pracovní nabídka. Použij reálné názvy škol. Text bude následně použit v životopisu. Pohlaví vlastníka životopisu je {}. 
 
     Formát jedné prcovní zkušenosti:
     <h3><název školy></h3>
@@ -90,7 +94,7 @@ def generate_education(job_description, education_type):
 
     response = openai.Completion.create(
         engine="text-davinci-003",
-        prompt=experience_prompt.format(job_description, education_type),
+        prompt=experience_prompt.format(job_description, education_type, czech_sex),
         max_tokens=1024,
         temperature=0.7
     ).choices[0].text

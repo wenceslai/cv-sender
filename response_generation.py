@@ -52,11 +52,12 @@ def categorize_offer(url, category, job_desc):
             customer_or_internal_facing = classify_is_client_facing(job_desc)
             category += "_" + customer_or_internal_facing
 
-    dir_path = os.path.join(CV_LOG_DIR, str(int(time.time())))
+    dir_path = os.path.join(CV_LOG_DIR, str(datetime.now().strftime("%d-%m-%Y %H:%M:%S")))
     os.mkdir(dir_path)
 
     details = generate_application_details_and_pdfs(category, job_desc, url, dir_path)
-    submit_pdfs(url, dir_path, details)
+    time.sleep(1)
+    # submit_pdfs(url, dir_path, details)
 
 
 def submit_pdfs(url, dir_path, details):
@@ -85,6 +86,8 @@ def submit_pdf(url, name, surname, email, cv_path):
 
     try:
         driver.get(url)
+
+
 
         answer_button = driver.find_element(By.XPATH,
                                      "//a[@class='Button Button--primary Button--large d-none d-tablet-inline-flex mr-tablet-700']")
@@ -180,8 +183,8 @@ def generate_pdf(tag, name, exps_num, template_number, dir_path, details):
     with open(f'cv-html-templates/template{template_number}.html', 'r') as file:
         html_content = file.read()
 
-        job_exps = generate_job_experiences(details["job_description"], exps_num)
-        education = generate_education(details["job_description"], details["education_type"])
+        job_exps = generate_job_experiences(details["job_description"], exps_num, details["sex"])
+        education = generate_education(details["job_description"], details["education_type"], details["sex"])
 
         filled_html = html_content % {"name": name, "education": education, "job_exps": job_exps}
 
