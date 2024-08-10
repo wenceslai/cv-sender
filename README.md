@@ -1,3 +1,10 @@
+# Job market discrimination research tool
+
+Used for research into discrimination Romani people face in Czechia's job market.
+
+The can generate resumes using randomised templates and text from GPT-3.5 based on job listings on the Czech website Jobs.cz. It submits a CV with typically Romani name and a typical Czech name. The researchers then gather responses to applications via email to see whether one of the ethnicities is favoured.
+
+
 1. **Gmail API** — the website Jobs.cz periodacally sends a set of offers posted on that day to a central gmail inbox. Use use the Google Cloud service Gmail API to connect to that inbox and periodically retrieve all emails marked as unread. Upon succesfully reading the email it’s marked as read. The raw email’s body with styling is decoded from base64 format. Using regex parsing we find all URLs pointing to a job offer.
 2. **Classification** — of offers — on the jobs.cz portal we set separate email notififications for low paying jobs, part time jobs and highly paid jobs using their own filtering system. Threshold for highly paid job is 50000 czk. The job type is noted in the email notification. If we have low paying offer we further classify it into a blue collar position and white collar position using GPT-3 API. If the offer is classified as white collar we use another GPT prompt to classify it as client facing or internally facing. Thus there are 5 possible classes in total.
 3. **Generating resumes** — for each offer we sent a set of 4 resumes. These are combinations of white/romani names and low/high qualification. Qualification differs in the number of job experiences listed in the final resume. We randomly assign 4 different html CV templates. For each using GPT we generate ceratain number of job experiences. We prompt GPT to make the experiences relevant to the job description. We also choose random combination of white/romani name and surname. Thirdly an education experience is added to the resume. Similarly written by GPT.
